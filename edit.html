@@ -1,0 +1,112 @@
+<script runat="server" language="javascript">
+
+	Platform.Load("Core","1");
+	var dataExtension = DataExtension.Init("deal-checker-9000");
+	var dId = Request.GetQueryStringParameter("dId");
+	var filter = {Property:"dealId",SimpleOperator:"equals",Value:dId};  
+	var deal = dataExtension.Rows.Retrieve(filter);
+
+	var dealId = deal[0].dealId;
+	var dealDescription = deal[0].dealDescription;
+	var dealGoodImageUrl = deal[0].dealGoodImageUrl;
+	var dealGoodLinkUrl = deal[0].dealGoodLinkUrl;
+	var dealExpiredImageUrl = deal[0].dealExpiredImageUrl;
+	var dealExpiredLinkUrl = deal[0].dealExpiredLinkUrl;
+	var active = deal[0].active;
+																						
+</script>
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Smart Images - Edit Deal</title>
+
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.0.4/css/bootstrap-combined.min.css">
+	
+	<!-- HTML5 shim, for IE6-8 support of HTML elements -->
+  <!--[if lt IE 9]>
+    <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
+	<script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.0.4/js/bootstrap.min.js"></script>
+
+	<script>
+		jQuery(function($) {
+		
+			$('a[rel=tooltip]').tooltip()
+			$('a[rel=popover]').popover()
+
+			var btn = $('.btn-toggle').click(function () {
+        $(this).button('loading')
+      })
+
+		})
+	</script>
+</head>
+<body>
+	<div class="container">
+		<div class="row">
+			<div class="span8 offset2">
+			<div class="page-header">
+				<h1>Edit Smart Image</h1>
+			</div>
+		</div>
+
+		<form action="http://pages.s4.exacttarget.com/page.aspx?QS=38dfbe491fab00eaaafba42a9cf0d37531f7d4b7af6d677dd0509a7a204b876e&action=edit" method="post" accept-charset="utf-8" class="form form-stacked">
+			
+		<div class="span8 offset2">
+				<label for="dealDescription">Image Description</label>
+				<input type="text" name="dealDescription" value="<ctrl:var name=dealDescription />" class="span8">			
+		</div>
+						
+		<div class="span8 offset2">
+				<label for="dealGoodImageUrl">Good Deal Image URL</label>
+				<input type="text" name="dealGoodImageUrl" value="<ctrl:var name=dealGoodImageUrl />" class="span8">
+		</div>
+		<div class="span8 offset2">
+				<label for="dealGoodLinkUrl">Good Deal Link URL</label>
+				<input type="text" name="dealGoodLinkUrl" value="<ctrl:var name=dealGoodLinkUrl />" class="span8">
+		</div>	
+
+		<div class="span8 offset2">
+				<label for="dealExpiredImageUrl">Expired Deal Image URL</label>
+				<input type="text" name="dealExpiredImageUrl" value="<ctrl:var name=dealExpiredImageUrl />" class="span8">
+		</div>
+		<div class="span8 offset2">
+				<label for="dealExpiredLinkUrl">Expired Deal Link URL</label>
+				<input type="text" name="dealExpiredLinkUrl" value="<ctrl:var name=dealExpiredLinkUrl />" class="span8">
+		</div>
+		
+		<div class="span4 offset2">
+				<label for="active">Active</label>
+				<select id="active" name="active">
+					<script runat="server" language="javascript">
+							if (active == "True") {
+								var output = "<option value=\"false\">No</option>";
+								output += "<option value=\"true\" selected=\"selected\">Yes</option>";
+								Write(output);
+							} else {
+								var output = "<option value=\"false\" selected=\"selected\">No</option>";
+								output += "<option value=\"true\">Yes</option>";
+								Write(output);
+							}
+					</script>
+					
+					
+				</select>
+
+				<input type="hidden" name="dealId" value="<ctrl:var name=dealId />">
+		</div>
+				
+		<div class="span8 offset2 well" style="text-align: right;">
+			<a href="http://pages.s4.exacttarget.com/page.aspx?QS=38dfbe491fab00ea44aa521a5322f9ab0461d70ac3ca5a8fdf80fd771a3988f4" class="btn">Cancel</a>
+			<input type="submit" value="Save Changes" class="btn btn-primary btn-toggle" data-loading-text="Saving...">
+		</p>
+		
+		</form>
+		</div>
+	</div>
+</body>
+</html>	

@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Smart Images</title>
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.0.4/css/bootstrap-combined.min.css">
+	
+	<!-- HTML5 shim, for IE6-8 support of HTML elements -->
+  <!--[if lt IE 9]>
+    <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+					
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
+	<script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.0.4/js/bootstrap.min.js"></script>
+
+	<script>
+		jQuery(function($) {
+		
+			$("#msgBox").delay(5000).fadeOut()
+
+			$('a[rel=tooltip]').tooltip()
+			$('a[rel=popover]').popover()
+
+			var btn = $('.btn-toggle').click(function () {
+        $(this).button('loading')
+      })
+
+		})
+	</script>
+</head>
+<body>
+	<div class="container">
+		<div class="row">
+			<div class="span12">
+			<div class="page-header">
+				<h1>Smart Images</h1>
+			</div>
+				<script runat="server" language="javascript">
+								
+					Platform.Load("Core","1");
+					
+					if (Request.GetQueryStringParameter("action") == "toggle") {
+						var msg =  "<div class=\"alert alert-success\" id=\"msgBox\">"
+								msg += "<strong>Boom!</strong> Image status successfully toggled"
+								msg += "</div>"
+
+						Write(msg);
+					}
+
+					if (Request.GetQueryStringParameter("action") == "delete") {
+						var msg =  "<div class=\"alert alert-success\" id=\"msgBox\">"
+								msg += "<strong>Cool!</strong> Image successfuly deleted"
+								msg += "</div>"
+
+						Write(msg);
+					}
+
+					if (Request.GetQueryStringParameter("action") == "publish") {
+						var msg =  "<div class=\"alert alert-success\" id=\"msgBox\">"
+								msg += "<strong>Boom!</strong> Image successfully published to a content area"
+								msg += "</div>"
+
+						Write(msg);
+					}
+
+					if (Request.GetQueryStringParameter("action") == "edit") {
+						var msg =  "<div class=\"alert alert-success\" id=\"msgBox\">"
+								msg += "<strong>Sweet!</strong> Image details were updated successfully"
+								msg += "</div>"
+
+						Write(msg);
+					}
+
+					if (Request.GetQueryStringParameter("action") == "new") {
+						var msg =  "<div class=\"alert alert-success\" id=\"msgBox\">"
+								msg += "<strong>Awesome!</strong> Image created successfully"
+								msg += "</div>"
+
+						Write(msg);
+					}
+
+					if (Request.GetQueryStringParameter("action") == "error") {
+						var msg =  "<div class=\"alert alert-error\" id=\"msgBox\">"
+								msg += "<strong>Uh oh...</strong> Something went terribly wrong..."
+								msg += "</div>"
+
+						Write(msg);
+					}
+					
+				</script>
+
+				<table class="table table-striped">	
+					<thead>
+						<tr>
+							<th>Deal ID</th>
+							<th>Deal Description</th>
+							<th style="text-align: center;">Status</th>
+							<th style="text-align: center;">Good URL</th>
+							<th style="text-align: center;">Expired URL</th>
+							<th style="text-align: center;">Publish</th>
+							<th style="text-align: center;">Actions</th>
+						</tr>
+					</thead>
+					<tbody>
+						<script runat="server" language="javascript">
+						
+							var dataExtension = DataExtension.Init("deal-checker-9000");
+							var rows = dataExtension.Rows.Retrieve();
+
+							for(i = 0; i < rows.length; i++) { 			
+								var output = "<tr>";
+										output += "<td>" + rows[i].dealId + "</td>";
+										output += "<td>" + rows[i].dealDescription + "</td>";
+										output += "<td style=\"text-align: center;\">";
+											if (rows[i].active == "True") {
+												output += "<a href=\"http://pages.s4.exacttarget.com/page.aspx?QS=38dfbe491fab00ea2d9cf316f462620eef678361dc797ba1b95cb9b2930da1cb&dId=" + rows[i].dealId + "\" class=\"btn btn-success btn-mini btn-toggle\" data-loading-text=\"Deactivating...\" rel=\"tooltip\" title=\"Click to Deactivate\">Active</a> ";
+											} else {
+												output += "<a href=\"http://pages.s4.exacttarget.com/page.aspx?QS=38dfbe491fab00ea2d9cf316f462620eef678361dc797ba1b95cb9b2930da1cb&dId=" + rows[i].dealId + "\" class=\"btn btn-inverse btn-mini btn-toggle\" data-loading-text=\"Activating...\" rel=\"tooltip\" title=\"Click to Activate\">Inactive</a> ";
+											}
+										output += "</td>";
+;										output += "<td style=\"text-align: center;\"><a href=\""+ rows[i].dealGoodImageUrl + "\" target=\"_new\" class=\"btn btn-mini\">View Good Image</a></td>";
+										output += "<td style=\"text-align: center;\"><a href=\""+ rows[i].dealExpiredImageUrl + "\" target=\"_new\" class=\"btn btn-mini\">View Expired Image</a></td>";
+										output += "<td style=\"text-align: center;\">";
+										if (rows[i].published == "True") {
+												output += "<a href=\"http://pages.s4.exacttarget.com/page.aspx?QS=38dfbe491fab00ea0899bf4bc746b51c85af7e2819f16428567cbbb765c54aa9&dId=" + rows[i].dealId + "\" class=\"btn btn-primary btn-mini btn-toggle\" rel=\"tooltip\" title=\"Publish this Image to a Content Area\" data-loading-text=\"Republishing...\"><i class=\"icon-repeat icon-white\"></i> Republish</a> ";
+											} else {
+												output += "<a href=\"http://pages.s4.exacttarget.com/page.aspx?QS=38dfbe491fab00ea0899bf4bc746b51c85af7e2819f16428567cbbb765c54aa9&dId=" + rows[i].dealId + "\" class=\"btn btn-primary btn-mini btn-toggle\" rel=\"tooltip\" title=\"Publish this Image to a Content Area\" data-loading-text=\"Publishing...\"><i class=\"icon-bullhorn icon-white\"></i> Publish</a> ";
+											}
+										output += "</td>";
+										output += "<td style=\"text-align: center;\">";											
+											output += "<a href=\"http://pages.s4.exacttarget.com/page.aspx?QS=38dfbe491fab00ea682fd7f963a0cd8d07f80aa66a75e64dcdbd71d972792169&did=" + rows[i].dealId + "\" class=\"btn btn-info btn-mini\" rel=\"tooltip\" title=\"Edit Image\"><i class=\"icon-pencil icon-white\"></i></a> ";
+											output += "<a href=\"http://pages.s4.exacttarget.com/page.aspx?QS=38dfbe491fab00ea1537e2d1cebe3c9f3b711e425e948416baade03728a66b6b&did=" + rows[i].dealId + "\" class=\"btn btn-danger btn-mini btn-toggle\" rel=\"tooltip\" title=\"Delete Image\" data-loading-text=\"<i class='icon-time icon-white'></i>\"><i class=\"icon-trash icon-white\"></i></a>";
+										output += "</td>";
+									output += "</tr>";
+									Write(output);
+							}
+						</script>
+					</tbody>
+				</table>
+		</div>
+		</div>
+		
+		<div class="row">
+			<div class="span12">
+				<div class="well" style="text-align:right;">
+					<a href="http://pages.s4.exacttarget.com/page.aspx?QS=38dfbe491fab00ea9b8e62b1e56ed7de0ed06137ad8b11061ec6fbdc03f4c1b8" class="btn btn-primary btn-toggle" data-loading-text="Loading...">Add New Image</a>
+				</div>
+				<p style="text-align: center; color: #ccc; font-size: 10px;">Questions? Contact <a href="mailto:kkeesling@exacttarget.com?subject=Smart Images">Kyle Keesling</a>.</p>
+			</div>
+		</div>
+	</div>
+</body>
+</html>	

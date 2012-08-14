@@ -1,0 +1,36 @@
+
+<script runat="server" language="javascript">
+
+	// URL to test it out: 
+	// http://pages.s4.exacttarget.com/page.aspx?QS=38dfbe491fab00eaede9e799897f55f1cc33427b5e9832b667135d3e43cfb912&did={insert deal id here}
+	
+	Platform.Load("Core","1");
+
+	// ------------------------------------ Custom Account Variables ------------------------------------
+	
+	//CustomerKey of the Data Extension where the info is stored
+	var DATA_EXTENSION = "deal-checker-9000";
+			
+	// ------------------------------------ Custom Account Variables ------------------------------------
+
+	// Let's see what deal we are working with here....
+	var dealId = Request.GetQueryStringParameter("dId");
+	var dataExtension = DataExtension.Init(DATA_EXTENSION);
+	var filter = {Property:"dealId",SimpleOperator:"equals",Value:dealId};  
+	var deal = dataExtension.Rows.Retrieve(filter);
+
+	// Get all the data we'll need...
+	var dealGoodLinkUrl = deal[0].dealGoodLinkUrl;
+	var dealExpiredLinkUrl = deal[0].dealExpiredLinkUrl;
+	var dealIsActive = deal[0].active;
+
+	// If the deal is active goto the good url, otherwise goto the expired URL
+	if (dealIsActive == "True") {
+		var url = dealGoodLinkUrl;
+	} else {
+		var url = dealExpiredLinkUrl;
+	}
+
+	Redirect(url, false);
+																						
+</script>

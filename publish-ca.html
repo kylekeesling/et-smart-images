@@ -1,0 +1,67 @@
+
+<script runat="server" language="javascript">
+	Platform.Load("Core","1");
+	// URL: http://pages.s4.exacttarget.com/page.aspx?QS=38dfbe491fab00ea0899bf4bc746b51c85af7e2819f16428567cbbb765c54aa9
+	
+	// ------------------------------------ Custom Account Variables ------------------------------------
+	//Link to the landing page which will be serving up the dynamic URL - NOTE: MUST BE A NON-PURL URL
+	var DYNAMIC_LINK_URL = "http://pages.s4.exacttarget.com/page.aspx?QS=38dfbe491fab00eaede9e799897f55f1cc33427b5e9832b667135d3e43cfb912";
+
+	//Link to the landing page which will be serving up the dynamic image - NOTE: MUST BE A NON-PURL URL
+	var DYNAMIC_IMAGE_URL = "http://pages.s4.exacttarget.com/page.aspx?QS=38dfbe491fab00ead522dbecaa76c68dce283d45d2cf6c1567923b8ee9e61b26";
+	
+	//CustomerKey of the Data Extension where the info is stored
+	var DATA_EXTENSION = "deal-checker-9000";
+
+	//ID of the folder where the content areas will be placed - can be found by hovering over the folder and recording the CID
+	var CONTENT_AREA_FOLDER_ID = 148895; 				
+	// ------------------------------------ Custom Account Variables ------------------------------------
+
+	if (Request.GetQueryStringParameter("dId")) {
+
+		// Get the deal id
+		var dealId = Request.GetQueryStringParameter("dId");
+		var dataExtension = DataExtension.Init(DATA_EXTENSION);
+
+		// Find the deal and its status in the data extension
+		var deal = dataExtension.Rows.Retrieve({Property:"dealId",SimpleOperator:"equals",Value:dealId});
+		var currentDeal = deal[0];
+
+		var contentAreaCode = '<style>.amp {font-size:1px;color:#fff;}</style><span class="amp">%%[</span><style>.code_none{display:none;}</style>	<div align="center" style="padding: 18px; border: 3px dashed rgb(69, 85, 96); font-family: Helvetica, Arial, sans-serif; font-weight: bold; color: #455560;">		<img src="http://image.s4.exct.net/lib/fe931570706d007e73/m/1/smart-image2.jpg" />		<h2 style="margin-top: 0; padding-top: 0;">' + currentDeal.dealDescription + '</h2>	</div><span class="amp">]%%</span><div class="code_none">		<a href="'+ DYNAMIC_LINK_URL + '&did=' + dealId + '" alias="' + currentDeal.dealDescription + '">		<img src="' + DYNAMIC_IMAGE_URL + '&did=' + dealId + '" /></a></div>';
+
+		// Let's see if this Content Area already exists
+		var results = ContentAreaObj.Retrieve({Property:"CustomerKey",SimpleOperator:"equals",Value:currentDeal.dealId});
+
+		if (results.length > 0) {
+			// If so update the existing content area
+			var existingCA = ContentAreaObj.Init(currentDeal.dealId);
+			var content = {
+		    "Name":currentDeal.dealDescription,
+		    "Content":contentAreaCode
+			};
+			var status = existingCA.Update(content);
+		} else {
+			// Otherwise we will create it
+			var content = {
+		    "CustomerKey":currentDeal.dealId,
+		    "Name":currentDeal.dealDescription,
+		    "CategoryID":CONTENT_AREA_FOLDER_ID,
+		    "Layout":"RawText",                            	
+		    "LayoutSpecified":true,                        
+		    "Content":contentAreaCode
+			};
+
+			var addedCA = ContentAreaObj.Add(content);
+		}
+
+		// Mark the image published in the Data Extension
+		dataExtension.Rows.Update({
+								   published:"True"
+								   }, ["dealId"], [dealId]);
+		
+	} 
+
+	// Go back home!
+	Redirect("http://pages.s4.exacttarget.com/page.aspx?QS=38dfbe491fab00ea44aa521a5322f9ab0461d70ac3ca5a8fdf80fd771a3988f4&action=publish",false);
+
+</script>

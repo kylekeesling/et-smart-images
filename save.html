@@ -1,0 +1,29 @@
+<script runat="server" language="javascript">
+			
+	Platform.Load("Core","1");
+
+	if (Request.GetFormField("dealId")) {
+		
+		var dataExtension = DataExtension.Init("deal-checker-9000");
+		
+		var dealId = Request.GetFormField("dealId");
+		var dealDescription = Request.GetFormField("dealDescription");
+		var dealGoodImageUrl = Request.GetFormField("dealGoodImageUrl");
+		var dealGoodLinkUrl = Request.GetFormField("dealGoodLinkUrl");
+		var dealExpiredImageUrl = Request.GetFormField("dealExpiredImageUrl");
+		var dealExpiredLinkUrl = Request.GetFormField("dealExpiredLinkUrl");
+		var active = Request.GetFormField("active");
+	
+		dataExtension.Rows.Update({
+								   dealDescription:dealDescription,
+								   dealGoodImageUrl:dealGoodImageUrl,
+								   dealGoodLinkUrl:dealGoodLinkUrl,
+								   dealExpiredImageUrl:dealExpiredImageUrl,
+								   dealExpiredLinkUrl:dealExpiredLinkUrl,
+								   active:active
+								   }, ["dealId"], [dealId]);
+	} 
+
+	Redirect("http://pages.s4.exacttarget.com/page.aspx?QS=38dfbe491fab00ea44aa521a5322f9ab0461d70ac3ca5a8fdf80fd771a3988f4&action=edit",false);
+
+</script>

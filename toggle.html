@@ -1,0 +1,32 @@
+<script runat="server" language="javascript">
+			
+	Platform.Load("Core","1");
+
+	if (Request.GetQueryStringParameter("dId")) {
+
+		// Get the deal id
+		var dealId = Request.GetQueryStringParameter("dId");
+
+		var dataExtension = DataExtension.Init("deal-checker-9000");
+
+		// Find the deal and its status in the data extension=
+		var deal = dataExtension.Rows.Retrieve({Property:"dealId",SimpleOperator:"equals",Value:dealId});
+		var currentStatus = deal[0].active;
+
+		// Find out if it needs to be active or not
+		if (currentStatus == "True") {
+			var newStatus = "False";
+		} else {
+			var newStatus = "True";
+		}
+	
+		//Update that mutha!
+		dataExtension.Rows.Update({
+								   active:newStatus
+								   }, ["dealId"], [dealId]);
+	} 
+
+	// Go back home!
+	Redirect("http://pages.s4.exacttarget.com/page.aspx?QS=38dfbe491fab00ea44aa521a5322f9ab0461d70ac3ca5a8fdf80fd771a3988f4&action=toggle",false);
+
+</script>
