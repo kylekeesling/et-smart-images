@@ -9,6 +9,9 @@
 
 	//Link to the landing page which will be serving up the dynamic image - NOTE: MUST BE A NON-PURL URL
 	var DYNAMIC_IMAGE_URL = "http://pages.s4.exacttarget.com/page.aspx?QS=38dfbe491fab00ead522dbecaa76c68dce283d45d2cf6c1567923b8ee9e61b26";
+
+	//Link to the dashboard - NOTE: MUST BE A NON-PURL URL
+	var DASHBOARD_URL = "http://pages.s4.exacttarget.com/page.aspx?QS=38dfbe491fab00ea44aa521a5322f9ab0461d70ac3ca5a8fdf80fd771a3988f4";
 	
 	//CustomerKey of the Data Extension where the info is stored
 	var DATA_EXTENSION = "deal-checker-9000";
@@ -62,6 +65,6 @@
 	} 
 
 	// Go back home!
-	Redirect("http://pages.s4.exacttarget.com/page.aspx?QS=38dfbe491fab00ea44aa521a5322f9ab0461d70ac3ca5a8fdf80fd771a3988f4&action=publish",false);
+	Redirect(DASHBOARD_URL + "&action=publish",false);
 
 </script>

@@ -1,3 +1,16 @@
+<script runat="server" language="javascript">
+
+	// ------------------------------------ Custom Account Variables ------------------------------------
+
+	//Link to the create action - NOTE: MUST BE A NON-PURL URL
+	var CREATE_URL = "http://pages.s4.exacttarget.com/page.aspx?QS=38dfbe491fab00ea2abe0640ec3d00d50e1b4ee88efdbf380db2b348ebdd37bc&action=new";
+
+	var DASHBOARD_URL = "http://pages.s4.exacttarget.com/page.aspx?QS=38dfbe491fab00ea44aa521a5322f9ab0461d70ac3ca5a8fdf80fd771a3988f4";
+			
+	// ------------------------------------ Custom Account Variables ------------------------------------
+	
+</script>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -36,7 +49,7 @@
 			</div>
 		</div>
 
-		<form action="http://pages.s4.exacttarget.com/page.aspx?QS=38dfbe491fab00ea2abe0640ec3d00d50e1b4ee88efdbf380db2b348ebdd37bc&action=new" method="post" accept-charset="utf-8" class="form-stacked">
+		<form action="<ctrl:var name=CREATE_URL />" method="post" accept-charset="utf-8" class="form-stacked">
 				
 				<div class="span8 offset2">
 					<label for="dealId">Deal ID</label>
@@ -77,7 +90,7 @@
 					<br><br>
 				</div>
 		<div class="span8 offset2 well" style="text-align: right;">
-			<a href="http://pages.s4.exacttarget.com/page.aspx?QS=38dfbe491fab00ea44aa521a5322f9ab0461d70ac3ca5a8fdf80fd771a3988f4" class="btn">Cancel</a>
+			<a href="<ctrl:var name=DASHBOARD_URL />" class="btn">Cancel</a>
 			<input type="submit" value="Create Smart Image" class="btn btn-primary btn-toggle" data-loading-text="Creating...">
 		</div>
 		</form>

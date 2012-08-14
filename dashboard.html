@@ -1,3 +1,26 @@
+<script runat="server" language="javascript">
+								
+	Platform.Load("Core","1");
+
+	//CustomerKey of the Data Extension where the info is stored
+	var DATA_EXTENSION = "deal-checker-9000";
+
+	//Link to the toggle action - NOTE: MUST BE A NON-PURL URL
+	var TOGGLE_URL = "http://pages.s4.exacttarget.com/page.aspx?QS=38dfbe491fab00ea2d9cf316f462620eef678361dc797ba1b95cb9b2930da1cb";
+
+	//Link to the edit action - NOTE: MUST BE A NON-PURL URL
+	var EDIT_URL = "http://pages.s4.exacttarget.com/page.aspx?QS=38dfbe491fab00ea682fd7f963a0cd8d07f80aa66a75e64dcdbd71d972792169";
+
+	//Link to the delete action - NOTE: MUST BE A NON-PURL URL
+	var DELETE_URL = "http://pages.s4.exacttarget.com/page.aspx?QS=38dfbe491fab00ea1537e2d1cebe3c9f3b711e425e948416baade03728a66b6b";
+
+	//Link to the publish ca action - NOTE: MUST BE A NON-PURL URL
+	var PUBLISH_URL = "http://pages.s4.exacttarget.com/page.aspx?QS=38dfbe491fab00ea0899bf4bc746b51c85af7e2819f16428567cbbb765c54aa9";
+
+	//Link to the create action/page - NOTE: MUST BE A NON-PURL URL
+	var CREATE_URL = "http://pages.s4.exacttarget.com/page.aspx?QS=38dfbe491fab00ea9b8e62b1e56ed7de0ed06137ad8b11061ec6fbdc03f4c1b8";
+
+</script>
 <!DOCTYPE html>
 <html>
 <head>
@@ -36,8 +59,6 @@
 				<h1>Smart Images</h1>
 			</div>
 				<script runat="server" language="javascript">
-								
-					Platform.Load("Core","1");
 					
 					if (Request.GetQueryStringParameter("action") == "toggle") {
 						var msg =  "<div class=\"alert alert-success\" id=\"msgBox\">"
@@ -104,7 +125,7 @@
 					<tbody>
 						<script runat="server" language="javascript">
 						
-							var dataExtension = DataExtension.Init("deal-checker-9000");
+							var dataExtension = DataExtension.Init(DATA_EXTENSION);
 							var rows = dataExtension.Rows.Retrieve();
 
 							for(i = 0; i < rows.length; i++) { 			
@@ -113,23 +134,23 @@
 										output += "<td>" + rows[i].dealDescription + "</td>";
 										output += "<td style=\"text-align: center;\">";
 											if (rows[i].active == "True") {
-												output += "<a href=\"http://pages.s4.exacttarget.com/page.aspx?QS=38dfbe491fab00ea2d9cf316f462620eef678361dc797ba1b95cb9b2930da1cb&dId=" + rows[i].dealId + "\" class=\"btn btn-success btn-mini btn-toggle\" data-loading-text=\"Deactivating...\" rel=\"tooltip\" title=\"Click to Deactivate\">Active</a> ";
+												output += "<a href=\"" + TOGGLE_URL + "&dId=" + rows[i].dealId + "\" class=\"btn btn-success btn-mini btn-toggle\" data-loading-text=\"Deactivating...\" rel=\"tooltip\" title=\"Click to Deactivate\">Active</a> ";
 											} else {
-												output += "<a href=\"http://pages.s4.exacttarget.com/page.aspx?QS=38dfbe491fab00ea2d9cf316f462620eef678361dc797ba1b95cb9b2930da1cb&dId=" + rows[i].dealId + "\" class=\"btn btn-inverse btn-mini btn-toggle\" data-loading-text=\"Activating...\" rel=\"tooltip\" title=\"Click to Activate\">Inactive</a> ";
+												output += "<a href=\"" + TOGGLE_URL + "&dId=" + rows[i].dealId + "\" class=\"btn btn-inverse btn-mini btn-toggle\" data-loading-text=\"Activating...\" rel=\"tooltip\" title=\"Click to Activate\">Inactive</a> ";
 											}
 										output += "</td>";
 ;										output += "<td style=\"text-align: center;\"><a href=\""+ rows[i].dealGoodImageUrl + "\" target=\"_new\" class=\"btn btn-mini\">View Good Image</a></td>";
 										output += "<td style=\"text-align: center;\"><a href=\""+ rows[i].dealExpiredImageUrl + "\" target=\"_new\" class=\"btn btn-mini\">View Expired Image</a></td>";
 										output += "<td style=\"text-align: center;\">";
 										if (rows[i].published == "True") {
-												output += "<a href=\"http://pages.s4.exacttarget.com/page.aspx?QS=38dfbe491fab00ea0899bf4bc746b51c85af7e2819f16428567cbbb765c54aa9&dId=" + rows[i].dealId + "\" class=\"btn btn-primary btn-mini btn-toggle\" rel=\"tooltip\" title=\"Publish this Image to a Content Area\" data-loading-text=\"Republishing...\"><i class=\"icon-repeat icon-white\"></i> Republish</a> ";
+												output += "<a href=\"" + PUBLISH_URL + "&dId=" + rows[i].dealId + "\" class=\"btn btn-primary btn-mini btn-toggle\" rel=\"tooltip\" title=\"Publish this Image to a Content Area\" data-loading-text=\"Republishing...\"><i class=\"icon-repeat icon-white\"></i> Republish</a> ";
 											} else {
-												output += "<a href=\"http://pages.s4.exacttarget.com/page.aspx?QS=38dfbe491fab00ea0899bf4bc746b51c85af7e2819f16428567cbbb765c54aa9&dId=" + rows[i].dealId + "\" class=\"btn btn-primary btn-mini btn-toggle\" rel=\"tooltip\" title=\"Publish this Image to a Content Area\" data-loading-text=\"Publishing...\"><i class=\"icon-bullhorn icon-white\"></i> Publish</a> ";
+												output += "<a href=\"" + PUBLISH_URL + "&dId=" + rows[i].dealId + "\" class=\"btn btn-primary btn-mini btn-toggle\" rel=\"tooltip\" title=\"Publish this Image to a Content Area\" data-loading-text=\"Publishing...\"><i class=\"icon-bullhorn icon-white\"></i> Publish</a> ";
 											}
 										output += "</td>";
 										output += "<td style=\"text-align: center;\">";											
-											output += "<a href=\"http://pages.s4.exacttarget.com/page.aspx?QS=38dfbe491fab00ea682fd7f963a0cd8d07f80aa66a75e64dcdbd71d972792169&did=" + rows[i].dealId + "\" class=\"btn btn-info btn-mini\" rel=\"tooltip\" title=\"Edit Image\"><i class=\"icon-pencil icon-white\"></i></a> ";
-											output += "<a href=\"http://pages.s4.exacttarget.com/page.aspx?QS=38dfbe491fab00ea1537e2d1cebe3c9f3b711e425e948416baade03728a66b6b&did=" + rows[i].dealId + "\" class=\"btn btn-danger btn-mini btn-toggle\" rel=\"tooltip\" title=\"Delete Image\" data-loading-text=\"<i class='icon-time icon-white'></i>\"><i class=\"icon-trash icon-white\"></i></a>";
+											output += "<a href=\"" + EDIT_URL + "&did=" + rows[i].dealId + "\" class=\"btn btn-info btn-mini\" rel=\"tooltip\" title=\"Edit Image\"><i class=\"icon-pencil icon-white\"></i></a> ";
+											output += "<a href=\"" + DELETE_URL + "&did=" + rows[i].dealId + "\" class=\"btn btn-danger btn-mini btn-toggle\" rel=\"tooltip\" title=\"Delete Image\" data-loading-text=\"<i class='icon-time icon-white'></i>\"><i class=\"icon-trash icon-white\"></i></a>";
 										output += "</td>";
 									output += "</tr>";
 									Write(output);
@@ -143,7 +164,7 @@
 		<div class="row">
 			<div class="span12">
 				<div class="well" style="text-align:right;">
-					<a href="http://pages.s4.exacttarget.com/page.aspx?QS=38dfbe491fab00ea9b8e62b1e56ed7de0ed06137ad8b11061ec6fbdc03f4c1b8" class="btn btn-primary btn-toggle" data-loading-text="Loading...">Add New Image</a>
+					<a href="<ctrl:var name=CREATE_URL />" class="btn btn-primary btn-toggle" data-loading-text="Loading...">Add New Image</a>
 				</div>
 				<p style="text-align: center; color: #ccc; font-size: 10px;">Questions? Contact <a href="mailto:kkeesling@exacttarget.com?subject=Smart Images">Kyle Keesling</a>.</p>
 			</div>

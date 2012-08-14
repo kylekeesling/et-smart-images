@@ -2,12 +2,22 @@
 			
 	Platform.Load("Core","1");
 
+	// ------------------------------------ Custom Account Variables ------------------------------------
+	
+	//CustomerKey of the Data Extension where the info is stored
+	var DATA_EXTENSION = "deal-checker-9000";
+
+	//Link to the dashboard - NOTE: MUST BE A NON-PURL URL
+	var DASHBOARD_URL = "http://pages.s4.exacttarget.com/page.aspx?QS=38dfbe491fab00ea44aa521a5322f9ab0461d70ac3ca5a8fdf80fd771a3988f4";
+			
+	// ------------------------------------ Custom Account Variables ------------------------------------		
+
 	if (Request.GetQueryStringParameter("dId")) {
 
 		// Get the deal id
 		var dealId = Request.GetQueryStringParameter("dId");
 
-		var dataExtension = DataExtension.Init("deal-checker-9000");
+		var dataExtension = DataExtension.Init(DATA_EXTENSION);
 
 		// Find the deal and its status in the data extension=
 		var deal = dataExtension.Rows.Retrieve({Property:"dealId",SimpleOperator:"equals",Value:dealId});
@@ -27,6 +37,6 @@
 	} 
 
 	// Go back home!
-	Redirect("http://pages.s4.exacttarget.com/page.aspx?QS=38dfbe491fab00ea44aa521a5322f9ab0461d70ac3ca5a8fdf80fd771a3988f4&action=toggle",false);
+	Redirect(DASHBOARD_URL + "&action=toggle",false);
 
 </script>
